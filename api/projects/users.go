@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/ansible-semaphore/semaphore/db"
+	"github.com/stanchan/semaphore/db"
 
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/stanchan/semaphore/util"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
 )

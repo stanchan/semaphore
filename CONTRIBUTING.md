@@ -23,7 +23,7 @@ export GOPATH=`pwd`
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
-mkdir -p $GOPATH/src/github.com/ansible-semaphore && cd $GOPATH/src/github.com/ansible-semaphore
+mkdir -p $GOPATH/src/github.com/stanchan && cd $GOPATH/src/github.com/stanchan
 ```
 
 2) Clone semaphore (with submodules)
@@ -69,7 +69,7 @@ Now it's ready to start.. Run `task watch`
 - Watches go files and recompiles the binary
 - Open [localhost:3000](http://localhost:3000)
 
-Note: for Windows, you may need [Cygwin](https://www.cygwin.com/) to run certain commands because the [reflex](github.com/cespare/reflex) package probably doesn't work on Windows. 
+Note: for Windows, you may need [Cygwin](https://www.cygwin.com/) to run certain commands because the [reflex](github.com/cespare/reflex) package probably doesn't work on Windows.
 You may encounter issues when running `task watch`, but running `task build` etc... will still be OK.
 
 ## Integration Tests

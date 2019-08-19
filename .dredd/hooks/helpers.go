@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ansible-semaphore/semaphore/db"
-	"github.com/ansible-semaphore/semaphore/util"
+	"github.com/stanchan/semaphore/db"
+	"github.com/stanchan/semaphore/util"
 	"github.com/snikch/goodman/transaction"
 	"math/rand"
 	"os"
