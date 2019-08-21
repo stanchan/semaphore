@@ -1,18 +1,22 @@
 # Golang testing image with some tools already installed
-FROM tomwhiston/micro-golang:test-base
+FROM stanchan/go-nodejs-npm-yarn:1.12.7_10.16.1
 
-LABEL maintainer="Tom Whiston <tom.whiston@gmail.com>"
+LABEL name="semaphore" \
+      version="3.0.0" \
+      os="alpine" \
+      osversion="3.10" \
+      architecture="amd64" \
+      vcs-url="https://github.com/stanchan/semaphore"
 
 ENV SEMAPHORE_VERSION="development" SEMAPHORE_ARCH="linux_amd64" \
     SEMAPHORE_CONFIG_PATH="${SEMAPHORE_CONFIG_PATH:-/etc/semaphore}" \
     APP_ROOT="/go/src/github.com/stanchan/semaphore/"
 
 # hadolint ignore=DL3013
-RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-certificates curl curl-dev openssh-client tini nodejs nodejs-npm bash rsync && \
-    apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base && \
-    pip install --upgrade pip cffi   && \
-    pip install ansible              && \
-    apk del build-dependencies && \
+RUN apk add --no-cache git mariadb-client python3 py3-openssl openssl ca-certificates curl curl-dev openssh-client tini bash rsync && \
+    apk add --no-cache --virtual build-dependencies python3-dev libffi-dev openssl-dev build-base && \
+    pip install --upgrade pip cffi && \
+    pip install ansible && \
     rm -rf /var/cache/apk/*    && \
     adduser -D -u 1002 -g 0 semaphore && \
     mkdir -p /go/src/github.com/stanchan/semaphore && \
@@ -21,9 +25,9 @@ RUN apk add --no-cache git mysql-client python py-pip py-openssl openssl ca-cert
     chown -R semaphore:0 /go && \
     chown -R semaphore:0 /tmp/semaphore && \
     chown -R semaphore:0 /etc/semaphore && \
-    ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N ""       && \
-    ssh-keyscan -H github.com > /root/.ssh/known_hosts      && \
-    go get -u -v github.com/go-task/task/cmd/task
+    ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N "" && \
+    ssh-keyscan -H github.com > /root/.ssh/known_hosts && \
+    curl -sL https://taskfile.dev/install.sh | sh
 
 # Copy in app source
 WORKDIR ${APP_ROOT}

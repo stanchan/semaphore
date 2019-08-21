@@ -2,21 +2,21 @@
 version: '2'
 
 services:
-
-  mysql:
-    image: mysql:5.6
-    hostname: mysql
+  mariadb:
+    image: mariadb:10.4
+    hostname: mariadb
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: semaphore
       MYSQL_USER: semaphore
       MYSQL_PASSWORD: hx4hjxqthfwbfsy5535u4agfdscm
-
   semaphore:
-    image: ansiblesemaphore/semaphore:prod-compose
+    image: stanchan/semaphore:prod-compose
     build:
       context: ./../../../
       dockerfile: ./deployment/docker/prod/Dockerfile
+    volumes:
+      - "./config/config.json:/etc/semaphore/config.json:ro"
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: hx4hjxqthfwbfsy5535u4agfdscm
@@ -29,11 +29,11 @@ services:
       SEMAPHORE_ADMIN_EMAIL: admin@localhost
       SEMAPHORE_ADMIN: admin
     depends_on:
-      - mysql
+      - mariadb
   semaphore_proxy:
-    image: ansiblesemaphore/proxy:latest
-    build:
-      context: ./proxy
+    image: stanchan/caddy:1.0.1
+    environment:
+      CADDY_TLS_MODE: caddy_tls_selfsigned
     ports:
       - "80:80"
       - "443:443"

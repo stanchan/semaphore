@@ -1,0 +1,28 @@
+(caddy_tls_auto) {
+    tls {$CADDY_TLS_EMAIL}
+}
+
+(caddy_tls_custom) {
+    tls {$CADDY_TLS_CERT} {$CADDY_TLS_KEY}
+}
+
+(caddy_tls_off) {
+    tls off
+}
+
+(caddy_tls_selfsigned) {
+    tls self_signed
+}
+
+semaphore:443 {
+    proxy / semaphore:3000 {
+        transparent
+        max_fails 10
+        fail_timeout 30s
+        keepalive 1
+    }
+    import /etc/caddy/sslmodes/{$CADDY_TLS_MODE}
+    timeouts 5m
+    log stdout
+    errors stdout
+}
